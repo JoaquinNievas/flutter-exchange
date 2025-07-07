@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exchange/providers/currency_calculator_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_exchange/models/currency.dart';
+import 'package:flutter_exchange/models/index.dart';
 import './bottom_currency_list.dart';
 
 class CurrencySelector extends ConsumerWidget {

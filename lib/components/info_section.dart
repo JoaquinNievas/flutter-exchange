@@ -28,13 +28,14 @@ class InfoSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTo = ref.watch(selectedCurrencyProvider.select((s) => s.to));
+    final amountInput = ref.watch(amountInputProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        InfoRow(label: "Tasa estimada", value: '≈ ${selectedTo.code}'),
-        InfoRow(label: "Recibirás", value: '≈ ${selectedTo.code}'),
-        InfoRow(label: "Tiempo estimado", value: '≈ 10 min'),
+        InfoRow(label: "Tasa estimada", value: '≈ ${amountInput.estimatedRate} ${selectedTo.code}'),
+        InfoRow(label: "Recibirás", value: '≈ ${amountInput.convertedAmount} ${selectedTo.code}'),
+        InfoRow(label: "Tiempo estimado", value: '≈ ${amountInput.time} min'),
       ],
     );
   }

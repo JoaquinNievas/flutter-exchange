@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_exchange/services/calculator/get_currency_list.dart';
-import 'package:flutter_exchange/models/currency.dart';
+import 'package:flutter_exchange/models/index.dart';
 import 'package:dio/dio.dart';
 part 'currency_calculator_state.g.dart';
 
@@ -56,8 +56,8 @@ class SelectedCurrency extends _$SelectedCurrency {
   @override
   SelectedCurrencyState build() {
     return SelectedCurrencyState(
-      from: Currency(type: CurrencyType.fiat, code: "", name: "", flagPath: "", symbol: ''),
-      to: Currency(type: CurrencyType.fiat, code: "", name: "", flagPath: "", symbol: ''),
+      from: Currency(type: CurrencyType.fiat, code: "", name: "", flagPath: "", symbol: '', id: ''),
+      to: Currency(type: CurrencyType.fiat, code: "", name: "", flagPath: "", symbol: '', id: ''),
     );
   }
 
@@ -133,32 +133,54 @@ class AmountInput extends _$AmountInput {
       return;
     }
 
-    final value = double.tryParse(input) ?? 0;
+    final value = (double.tryParse(input) ?? 0).abs();
 
-    final fromCurrency = ref.read(selectedCurrencyProvider).from;
-    final toCurrency = ref.read(selectedCurrencyProvider).to;
+    final currencies = ref.read(selectedCurrencyProvider);
+    final fromCurrency = currencies.from;
+    final toCurrency = currencies.to;
 
     final fromType = fromCurrency.type;
-    final criptoCurrencyId = fromType == CurrencyType.crypto ? fromCurrency.code : toCurrency.code;
-    final fiatCurrencyId = fromType == CurrencyType.fiat ? fromCurrency.code : toCurrency.code;
+    final criptoCurrencyId = fromType == CurrencyType.crypto ? fromCurrency.id : toCurrency.id;
+    final fiatCurrencyId = fromType == CurrencyType.fiat ? fromCurrency.id : toCurrency.id;
 
     final queryParams = {
       'type': fromType == CurrencyType.crypto ? 0 : 1,
       'cryptoCurrencyId': criptoCurrencyId,
       'fiatCurrencyId': fiatCurrencyId,
-      'amount': value.abs(),
-      'amountCurrencyId': fromCurrency.code,
+      'amount': value,
+      'amountCurrencyId': fromCurrency.id,
     };
-
-    print(queryParams);
 
     try {
       final response = await Dio().get(
         'https://74j6q7lg6a.execute-api.eu-west-1.amazonaws.com/stage/orderbook/public/recommendations',
         queryParameters: queryParams,
       );
-      print(response.data?.byPrice.toString());
+      final raw = response.data as Map<String, dynamic>;
+      final data = raw['data'];
+      if (data is! Map || data.isEmpty) throw Exception("No se encontró información");
+
+      final byPrice = data['byPrice'];
+      final rawFiatToCryptoExchangeRate = byPrice['fiatToCryptoExchangeRate'];
+      final fiatToCryptoExchangeRate = double.tryParse(rawFiatToCryptoExchangeRate);
+
+      if (fiatToCryptoExchangeRate == null || fiatToCryptoExchangeRate.isNaN || fiatToCryptoExchangeRate == 0.0) {
+        throw Exception("Ocurrió un error al obtener la tasa de cambio");
+      }
+
+      final convertedAmount = fromType == CurrencyType.fiat
+          ? value / fiatToCryptoExchangeRate
+          : value * fiatToCryptoExchangeRate;
+
+      state = ConvertionResult(
+        amount: value,
+        estimatedRate: fiatToCryptoExchangeRate,
+        convertedAmount: (double.parse(convertedAmount.toStringAsFixed(2))),
+        time: 10, // no se de donde sacar este dato
+        isLoading: false,
+      );
     } catch (e) {
+      //TODO: Mostrar snackbar de error
       print("Error fetching conversion data: $e");
       state = ConvertionResult(amount: value, estimatedRate: 0.0, convertedAmount: 0.0, time: 10, isLoading: false);
       return;

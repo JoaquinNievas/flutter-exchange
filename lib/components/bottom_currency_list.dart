@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_exchange/models/currency.dart';
+import 'package:flutter_exchange/models/index.dart';
 
 class BottomCurrencyList extends StatelessWidget {
   const BottomCurrencyList({super.key, required this.currencies, required this.currencyType, required this.onSelected});

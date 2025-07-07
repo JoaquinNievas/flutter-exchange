@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exchange/providers/currency_calculator_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_exchange/models/currency.dart';
+import 'package:flutter_exchange/models/index.dart';
 import 'package:flutter_exchange/components/currency_selector.dart';
 import 'package:flutter_exchange/components/info_section.dart';
 import 'package:flutter_exchange/components/input_field.dart';

@@ -2,8 +2,12 @@ import 'package:flutter_exchange/models/currency.dart';
 
 //Simulo un listado de monedas que podrían venir de una API
 const List<Currency> currenciesMock = [
+  //
+  // FIAT
+  //
   Currency(
     type: CurrencyType.fiat,
+    id: 'VES',
     code: "VES",
     symbol: 'Bs',
     name: "Bolívares",
@@ -11,6 +15,7 @@ const List<Currency> currenciesMock = [
   ),
   Currency(
     type: CurrencyType.fiat,
+    id: 'COP',
     code: "COP",
     symbol: 'COL\$',
     name: "Pesos Colombianos",
@@ -18,6 +23,7 @@ const List<Currency> currenciesMock = [
   ),
   Currency(
     type: CurrencyType.fiat,
+    id: 'PEN',
     code: "PEN",
     symbol: 'S/',
     name: "Soles Peruanos",
@@ -25,14 +31,27 @@ const List<Currency> currenciesMock = [
   ),
   Currency(
     type: CurrencyType.fiat,
+    id: 'BRL',
     code: "BRL",
     symbol: 'R\$',
     name: "Real Brasileño",
     flagPath: "assets/fiat_currencies/BRL.png",
   ),
+  Currency(
+    type: CurrencyType.fiat,
+    id: 'ARS',
+    code: "ARS",
+    symbol: '\$',
+    name: "Peso Argentino",
+    flagPath: "assets/fiat_currencies/BRL.png",
+  ),
 
+  //
+  // Cripto
+  //
   Currency(
     type: CurrencyType.crypto,
+    id: 'TATUM-TRON-USDT',
     code: "USDT",
     symbol: 'USDT',
     name: "Tether",
