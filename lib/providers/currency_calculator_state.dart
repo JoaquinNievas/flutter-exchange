@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_exchange/services/calculator/get_currency_list.dart';
 import 'package:flutter_exchange/models/currency.dart';
-
+import 'package:dio/dio.dart';
 part 'currency_calculator_state.g.dart';
 
 //
@@ -102,11 +102,13 @@ class ConvertionResult {
   final double estimatedRate;
   final double convertedAmount;
   final int time;
+  final bool isLoading;
   const ConvertionResult({
     required this.amount,
     required this.estimatedRate,
     required this.convertedAmount,
     required this.time,
+    this.isLoading = false,
   });
 }
 
@@ -117,6 +119,7 @@ class AmountInput extends _$AmountInput {
     estimatedRate: 0.0,
     convertedAmount: 0.0,
     time: 10,
+    isLoading: false,
   );
 
   @override
@@ -124,17 +127,41 @@ class AmountInput extends _$AmountInput {
     return _initialValue;
   }
 
-  void update(String input) {
+  void update(String input) async {
     if (input.isEmpty) {
       state = _initialValue;
       return;
     }
+
     final value = double.tryParse(input) ?? 0;
-    state = ConvertionResult(
-      amount: value,
-      estimatedRate: 5.0, // Aquí deberías calcular la tasa estimada real
-      convertedAmount: value * state.estimatedRate,
-      time: 15, // Aquí deberías calcular el tiempo real de conversión
-    );
+
+    final fromCurrency = ref.read(selectedCurrencyProvider).from;
+    final toCurrency = ref.read(selectedCurrencyProvider).to;
+
+    final fromType = fromCurrency.type;
+    final criptoCurrencyId = fromType == CurrencyType.crypto ? fromCurrency.code : toCurrency.code;
+    final fiatCurrencyId = fromType == CurrencyType.fiat ? fromCurrency.code : toCurrency.code;
+
+    final queryParams = {
+      'type': fromType == CurrencyType.crypto ? 0 : 1,
+      'cryptoCurrencyId': criptoCurrencyId,
+      'fiatCurrencyId': fiatCurrencyId,
+      'amount': value.abs(),
+      'amountCurrencyId': fromCurrency.code,
+    };
+
+    print(queryParams);
+
+    try {
+      final response = await Dio().get(
+        'https://74j6q7lg6a.execute-api.eu-west-1.amazonaws.com/stage/orderbook/public/recommendations',
+        queryParameters: queryParams,
+      );
+      print(response.data?.byPrice.toString());
+    } catch (e) {
+      print("Error fetching conversion data: $e");
+      state = ConvertionResult(amount: value, estimatedRate: 0.0, convertedAmount: 0.0, time: 10, isLoading: false);
+      return;
+    }
   }
 }
