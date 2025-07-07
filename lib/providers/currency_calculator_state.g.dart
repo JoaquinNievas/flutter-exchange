@@ -58,5 +58,21 @@ final selectedCurrencyProvider =
     );
 
 typedef _$SelectedCurrency = AutoDisposeNotifier<SelectedCurrencyState>;
+String _$amountInputHash() => r'b3e9d1136d558eedd8831e29cfc0d61e1a420ebf';
+
+/// See also [AmountInput].
+@ProviderFor(AmountInput)
+final amountInputProvider =
+    AutoDisposeNotifierProvider<AmountInput, ConvertionResult>.internal(
+      AmountInput.new,
+      name: r'amountInputProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$amountInputHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$AmountInput = AutoDisposeNotifier<ConvertionResult>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

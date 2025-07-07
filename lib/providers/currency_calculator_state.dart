@@ -4,6 +4,9 @@ import 'package:flutter_exchange/models/currency.dart';
 
 part 'currency_calculator_state.g.dart';
 
+//
+// Listado de todas las monedas divididas en fiat y crypto
+//
 class CurrencyListState {
   final List<Currency> fiatCurrencies;
   final List<Currency> cryptoCurrencies;
@@ -39,6 +42,9 @@ class CurrencyList extends _$CurrencyList {
   }
 }
 
+//
+// Estado de las monedas seleccionadas
+//
 class SelectedCurrencyState {
   final Currency from;
   final Currency to;
@@ -73,6 +79,9 @@ class SelectedCurrency extends _$SelectedCurrency {
   }
 }
 
+//
+// Verifica si los datos necesarios para el cálculo están listos
+//
 @riverpod
 bool isDataready(ref) {
   final currencyList = ref.watch(currencyListProvider);
@@ -83,4 +92,49 @@ bool isDataready(ref) {
       currencyList.cryptoCurrencies.isNotEmpty &&
       selectedCurrencies.from.code.isNotEmpty &&
       selectedCurrencies.to.code.isNotEmpty;
+}
+
+//
+// Controla el input del monto y realiza el cálculo de la conversión
+//
+class ConvertionResult {
+  final double amount;
+  final double estimatedRate;
+  final double convertedAmount;
+  final int time;
+  const ConvertionResult({
+    required this.amount,
+    required this.estimatedRate,
+    required this.convertedAmount,
+    required this.time,
+  });
+}
+
+@riverpod
+class AmountInput extends _$AmountInput {
+  static const ConvertionResult _initialValue = ConvertionResult(
+    amount: 5,
+    estimatedRate: 0.0,
+    convertedAmount: 0.0,
+    time: 10,
+  );
+
+  @override
+  ConvertionResult build() {
+    return _initialValue;
+  }
+
+  void update(String input) {
+    if (input.isEmpty) {
+      state = _initialValue;
+      return;
+    }
+    final value = double.tryParse(input) ?? 0;
+    state = ConvertionResult(
+      amount: value,
+      estimatedRate: 5.0, // Aquí deberías calcular la tasa estimada real
+      convertedAmount: value * state.estimatedRate,
+      time: 15, // Aquí deberías calcular el tiempo real de conversión
+    );
+  }
 }
