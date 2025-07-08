@@ -3,6 +3,7 @@ import 'package:flutter_exchange/providers/currency_calculator_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exchange/models/index.dart';
 import './bottom_currency_list.dart';
+import 'package:flutter_exchange/config/app_colors.dart';
 
 class CurrencySelector extends ConsumerWidget {
   const CurrencySelector({super.key, required this.currency, required this.isfrom});
@@ -80,7 +81,7 @@ class CurrencySelectorBox extends ConsumerWidget {
         GestureDetector(
           onTap: () => ref.read(selectedCurrencyProvider.notifier).toggle(),
           child: CircleAvatar(
-            backgroundColor: Colors.orange,
+            backgroundColor: AppColors.primary,
             child: Icon(Icons.sync_alt, color: Colors.white),
           ),
         ),

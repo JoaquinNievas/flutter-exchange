@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_exchange/config/app_colors.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_exchange/providers/currency_calculator_state.dart';
@@ -15,15 +16,7 @@ class AmountInputField extends ConsumerWidget {
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       decoration: InputDecoration(
         prefixText: '${selectedFrom.code} ',
-        prefixStyle: TextStyle(color: Colors.orange, fontSize: 15),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.orange),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.orange, width: 2),
-        ),
+        prefixStyle: TextStyle(color: AppColors.primary, fontSize: 15),
         contentPadding: EdgeInsets.symmetric(horizontal: 12),
       ),
       initialValue: intialAmount.toString(),
