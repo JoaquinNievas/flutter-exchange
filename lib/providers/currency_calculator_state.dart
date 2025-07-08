@@ -112,6 +112,32 @@ class ConvertionResult {
   });
 }
 
+class ConversionRequest {
+  final String cryptoCurrencyId;
+  final String fiatCurrencyId;
+  final double amount;
+  final String amountCurrencyId;
+  final int type; // 0 for crypto, 1 for fiat
+
+  ConversionRequest({
+    required this.cryptoCurrencyId,
+    required this.fiatCurrencyId,
+    required this.amount,
+    required this.amountCurrencyId,
+    required this.type,
+  });
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'type': type,
+      'cryptoCurrencyId': cryptoCurrencyId,
+      'fiatCurrencyId': fiatCurrencyId,
+      'amount': amount,
+      'amountCurrencyId': amountCurrencyId,
+    };
+  }
+}
+
 @riverpod
 class AmountInput extends _$AmountInput {
   static const ConvertionResult _initialValue = ConvertionResult(
@@ -135,6 +161,77 @@ class AmountInput extends _$AmountInput {
 
     final value = (double.tryParse(input) ?? 0).abs();
 
+    state = ConvertionResult(
+      amount: value,
+      estimatedRate: state.estimatedRate,
+      convertedAmount: state.convertedAmount,
+      time: state.time,
+      isLoading: true,
+    );
+
+    // final currencies = ref.read(selectedCurrencyProvider);
+    // final fromCurrency = currencies.from;
+    // final toCurrency = currencies.to;
+
+    // final fromType = fromCurrency.type;
+    // final criptoCurrencyId = fromType == CurrencyType.crypto ? fromCurrency.id : toCurrency.id;
+    // final fiatCurrencyId = fromType == CurrencyType.fiat ? fromCurrency.id : toCurrency.id;
+
+    // final queryParams = {
+    //   'type': fromType == CurrencyType.crypto ? 0 : 1,
+    //   'cryptoCurrencyId': criptoCurrencyId,
+    //   'fiatCurrencyId': fiatCurrencyId,
+    //   'amount': value,
+    //   'amountCurrencyId': fromCurrency.id,
+    // };
+
+    // final request = ConversionRequest(
+    //   cryptoCurrencyId: criptoCurrencyId,
+    //   fiatCurrencyId: fiatCurrencyId,
+    //   amount: value,
+    //   amountCurrencyId: fromCurrency.id,
+    //   type: fromType == CurrencyType.crypto ? 0 : 1,
+    // );
+
+    _fetchConversionData();
+
+    // try {
+    //   final response = await Dio().get(
+    //     'https://74j6q7lg6a.execute-api.eu-west-1.amazonaws.com/stage/orderbook/public/recommendations',
+    //     queryParameters: queryParams,
+    //   );
+    //   final raw = response.data as Map<String, dynamic>;
+    //   final data = raw['data'];
+    //   if (data is! Map || data.isEmpty) throw Exception("No se encontró información");
+
+    //   final byPrice = data['byPrice'];
+    //   final rawFiatToCryptoExchangeRate = byPrice['fiatToCryptoExchangeRate'];
+    //   final fiatToCryptoExchangeRate = double.tryParse(rawFiatToCryptoExchangeRate);
+
+    //   if (fiatToCryptoExchangeRate == null || fiatToCryptoExchangeRate.isNaN || fiatToCryptoExchangeRate == 0.0) {
+    //     throw Exception("Ocurrió un error al obtener la tasa de cambio");
+    //   }
+
+    //   final convertedAmount = fromType == CurrencyType.fiat
+    //       ? value / fiatToCryptoExchangeRate
+    //       : value * fiatToCryptoExchangeRate;
+
+    //   state = ConvertionResult(
+    //     amount: value,
+    //     estimatedRate: fiatToCryptoExchangeRate,
+    //     convertedAmount: (double.parse(convertedAmount.toStringAsFixed(2))),
+    //     time: 10, // no se de donde sacar este dato
+    //     isLoading: false,
+    //   );
+    // } catch (e) {
+    //   //TODO: Mostrar snackbar de error
+    //   print("Error fetching conversion data: $e");
+    //   state = ConvertionResult(amount: value, estimatedRate: 0.0, convertedAmount: 0.0, time: 10, isLoading: false);
+    //   return;
+    // }
+  }
+
+  void _fetchConversionData() async {
     final currencies = ref.read(selectedCurrencyProvider);
     final fromCurrency = currencies.from;
     final toCurrency = currencies.to;
@@ -142,19 +239,28 @@ class AmountInput extends _$AmountInput {
     final fromType = fromCurrency.type;
     final criptoCurrencyId = fromType == CurrencyType.crypto ? fromCurrency.id : toCurrency.id;
     final fiatCurrencyId = fromType == CurrencyType.fiat ? fromCurrency.id : toCurrency.id;
+    final amount = state.amount;
 
-    final queryParams = {
-      'type': fromType == CurrencyType.crypto ? 0 : 1,
-      'cryptoCurrencyId': criptoCurrencyId,
-      'fiatCurrencyId': fiatCurrencyId,
-      'amount': value,
-      'amountCurrencyId': fromCurrency.id,
-    };
+    final request = ConversionRequest(
+      cryptoCurrencyId: criptoCurrencyId,
+      fiatCurrencyId: fiatCurrencyId,
+      amount: amount,
+      amountCurrencyId: fromCurrency.id,
+      type: fromType == CurrencyType.crypto ? 0 : 1,
+    );
+
+    state = ConvertionResult(
+      amount: request.amount,
+      estimatedRate: 0.0,
+      convertedAmount: 0.0,
+      time: 10,
+      isLoading: true,
+    );
 
     try {
       final response = await Dio().get(
         'https://74j6q7lg6a.execute-api.eu-west-1.amazonaws.com/stage/orderbook/public/recommendations',
-        queryParameters: queryParams,
+        queryParameters: request.toJSON(),
       );
       final raw = response.data as Map<String, dynamic>;
       final data = raw['data'];
@@ -168,12 +274,12 @@ class AmountInput extends _$AmountInput {
         throw Exception("Ocurrió un error al obtener la tasa de cambio");
       }
 
-      final convertedAmount = fromType == CurrencyType.fiat
-          ? value / fiatToCryptoExchangeRate
-          : value * fiatToCryptoExchangeRate;
+      final convertedAmount = request.type == 1
+          ? request.amount / fiatToCryptoExchangeRate
+          : request.amount * fiatToCryptoExchangeRate;
 
       state = ConvertionResult(
-        amount: value,
+        amount: request.amount,
         estimatedRate: fiatToCryptoExchangeRate,
         convertedAmount: (double.parse(convertedAmount.toStringAsFixed(2))),
         time: 10, // no se de donde sacar este dato
@@ -182,8 +288,13 @@ class AmountInput extends _$AmountInput {
     } catch (e) {
       //TODO: Mostrar snackbar de error
       print("Error fetching conversion data: $e");
-      state = ConvertionResult(amount: value, estimatedRate: 0.0, convertedAmount: 0.0, time: 10, isLoading: false);
-      return;
+      state = ConvertionResult(
+        amount: request.amount,
+        estimatedRate: 0.0,
+        convertedAmount: 0.0,
+        time: 10,
+        isLoading: false,
+      );
     }
   }
 }

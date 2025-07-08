@@ -16,6 +16,7 @@ class MyHomePage extends ConsumerStatefulWidget {
 class _MyHomePageState extends ConsumerState<MyHomePage> {
   Currency? selectedFrom;
   Currency? selectedTo;
+  static const _globalSpacing = 20.0;
 
   @override
   void initState() {
@@ -35,8 +36,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         child: showLoader
             ? CircularProgressIndicator()
             : Container(
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.all(16),
+                width: 350,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
@@ -44,27 +44,36 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  spacing: 20.0,
+                  spacing: _globalSpacing,
                   children: [
                     // Monedas
-                    CurrencySelectorBox(),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(_globalSpacing, _globalSpacing, _globalSpacing, 0),
+                      child: CurrencySelectorBox(),
+                    ),
 
                     // Monto
-                    AmountInputField(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: _globalSpacing),
+                      child: AmountInputField(),
+                    ),
 
                     // Info
                     InfoSection(),
 
                     // Botón
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(_globalSpacing, 0, _globalSpacing, _globalSpacing),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          ),
+                          child: Text("Cambiar", style: TextStyle(color: Colors.white, fontSize: 16)),
                         ),
-                        child: Text("Cambiar", style: TextStyle(color: Colors.white, fontSize: 16)),
                       ),
                     ),
                   ],
