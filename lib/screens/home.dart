@@ -44,18 +44,16 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
+                  spacing: 20.0,
                   children: [
                     // Monedas
                     CurrencySelectorBox(),
-                    SizedBox(height: 16),
 
                     // Monto
                     AmountInputField(),
-                    SizedBox(height: 20),
 
                     // Info
                     InfoSection(),
-                    SizedBox(height: 20),
 
                     // Botón
                     SizedBox(
