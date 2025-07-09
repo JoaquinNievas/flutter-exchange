@@ -39,7 +39,7 @@ final currencyListProvider =
     );
 
 typedef _$CurrencyList = Notifier<CurrencyListState>;
-String _$selectedCurrencyHash() => r'ea70f49706a9c940a47a8e44494dd75bfc05e274';
+String _$selectedCurrencyHash() => r'31b6020c6ca5c0a849cb35c99e19e0d830588ae4';
 
 /// See also [SelectedCurrency].
 @ProviderFor(SelectedCurrency)
@@ -58,7 +58,7 @@ final selectedCurrencyProvider =
     );
 
 typedef _$SelectedCurrency = AutoDisposeNotifier<SelectedCurrencyState>;
-String _$amountInputHash() => r'62b23d94b1ae2bdc511fb6a296cc89e3a403d536';
+String _$amountInputHash() => r'20ac7a83e505b34a2c76e0f69568dc19f8f0392c';
 
 /// See also [AmountInput].
 @ProviderFor(AmountInput)

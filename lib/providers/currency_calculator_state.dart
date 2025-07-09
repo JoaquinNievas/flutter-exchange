@@ -63,10 +63,12 @@ class SelectedCurrency extends _$SelectedCurrency {
 
   void setFrom(Currency currency) {
     state = SelectedCurrencyState(from: currency, to: state.to);
+    ref.read(amountInputProvider.notifier).fetchConversionData();
   }
 
   void setTo(Currency currency) {
     state = SelectedCurrencyState(to: currency, from: state.from);
+    ref.read(amountInputProvider.notifier).fetchConversionData();
   }
 
   void setBoth(Currency from, Currency to) {
@@ -76,6 +78,7 @@ class SelectedCurrency extends _$SelectedCurrency {
   void toggle() {
     final temp = state.from;
     state = SelectedCurrencyState(from: state.to, to: temp);
+    ref.read(amountInputProvider.notifier).fetchConversionData();
   }
 }
 
@@ -157,7 +160,7 @@ class ConversionRequest {
 @Riverpod(keepAlive: true)
 class AmountInput extends _$AmountInput {
   static const ConvertionResult _initialValue = ConvertionResult(
-    amount: 5,
+    amount: 50,
     estimatedRate: 0.0,
     convertedAmount: 0.0,
     time: 10,
