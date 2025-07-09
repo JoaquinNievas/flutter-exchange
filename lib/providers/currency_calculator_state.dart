@@ -106,12 +106,15 @@ class ConvertionResult {
   final double convertedAmount;
   final int time;
   final bool isLoading;
+  final String? errorMessage;
+
   const ConvertionResult({
     required this.amount,
     required this.estimatedRate,
     required this.convertedAmount,
     required this.time,
     this.isLoading = false,
+    this.errorMessage,
   });
 
   ConvertionResult copyWith({
@@ -120,6 +123,7 @@ class ConvertionResult {
     double? convertedAmount,
     int? time,
     bool? isLoading,
+    String? errorMessage,
   }) {
     return ConvertionResult(
       amount: amount ?? this.amount,
@@ -127,6 +131,7 @@ class ConvertionResult {
       convertedAmount: convertedAmount ?? this.convertedAmount,
       time: time ?? this.time,
       isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
@@ -231,15 +236,12 @@ class AmountInput extends _$AmountInput {
         isLoading: false,
       );
     } catch (e) {
-      //TODO: Mostrar snackbar de error
-      print("Error fetching conversion data: $e");
-      state = ConvertionResult(
-        amount: request.amount,
-        estimatedRate: 0.0,
-        convertedAmount: 0.0,
-        time: 10,
-        isLoading: false,
-      );
+      final message = e is DioException ? e.message : e.toString().split(': ').last;
+      state = state.copyWith(isLoading: false, errorMessage: message);
     }
+  }
+
+  void clearError() {
+    state = state.copyWith(errorMessage: null);
   }
 }
