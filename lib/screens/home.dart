@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exchange/providers/currency_calculator_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exchange/models/index.dart';
-import 'package:flutter_exchange/components/currency_selector.dart';
+import 'package:flutter_exchange/components/currency_selector_container.dart';
 import 'package:flutter_exchange/components/info_section.dart';
 import 'package:flutter_exchange/components/input_field.dart';
 
@@ -63,7 +63,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                     // Monedas
                     Padding(
                       padding: const EdgeInsets.fromLTRB(_globalSpacing, _globalSpacing, _globalSpacing, 0),
-                      child: CurrencySelectorBox(),
+                      child: CurrencySelectorContainer(),
                     ),
 
                     // Monto
