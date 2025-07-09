@@ -7,6 +7,14 @@ const List<Currency> currenciesMock = [
   //
   Currency(
     type: CurrencyType.fiat,
+    id: 'BRL',
+    code: "BRL",
+    symbol: 'R\$',
+    name: "Real Brasileño",
+    flagPath: "assets/fiat_currencies/BRL.png",
+  ),
+  Currency(
+    type: CurrencyType.fiat,
     id: 'VES',
     code: "VES",
     symbol: 'Bs',
@@ -28,14 +36,6 @@ const List<Currency> currenciesMock = [
     symbol: 'S/',
     name: "Soles Peruanos",
     flagPath: "assets/fiat_currencies/PEN.png",
-  ),
-  Currency(
-    type: CurrencyType.fiat,
-    id: 'BRL',
-    code: "BRL",
-    symbol: 'R\$',
-    name: "Real Brasileño",
-    flagPath: "assets/fiat_currencies/BRL.png",
   ),
   Currency(
     type: CurrencyType.fiat,

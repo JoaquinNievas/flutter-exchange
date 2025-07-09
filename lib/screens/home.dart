@@ -23,6 +23,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     super.initState();
     Future.microtask(() async {
       await ref.read(currencyListProvider.notifier).fetchCurrencies();
+      await ref.read(amountInputProvider.notifier).fetchConversionData();
     });
   }
 

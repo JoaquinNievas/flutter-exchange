@@ -23,7 +23,7 @@ final isDatareadyProvider = AutoDisposeProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef IsDatareadyRef = AutoDisposeProviderRef<bool>;
-String _$currencyListHash() => r'5d53fc27fc48164087fd73b85fde38aa8b0d4f67';
+String _$currencyListHash() => r'1815bc30d5801da306719103a83d3bb0299198bb';
 
 /// See also [CurrencyList].
 @ProviderFor(CurrencyList)
@@ -58,12 +58,12 @@ final selectedCurrencyProvider =
     );
 
 typedef _$SelectedCurrency = AutoDisposeNotifier<SelectedCurrencyState>;
-String _$amountInputHash() => r'4cc24d37b1ee6a5fad519c1df4a5a3a7e86b6951';
+String _$amountInputHash() => r'62b23d94b1ae2bdc511fb6a296cc89e3a403d536';
 
 /// See also [AmountInput].
 @ProviderFor(AmountInput)
 final amountInputProvider =
-    AutoDisposeNotifierProvider<AmountInput, ConvertionResult>.internal(
+    NotifierProvider<AmountInput, ConvertionResult>.internal(
       AmountInput.new,
       name: r'amountInputProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -73,6 +73,6 @@ final amountInputProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$AmountInput = AutoDisposeNotifier<ConvertionResult>;
+typedef _$AmountInput = Notifier<ConvertionResult>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
