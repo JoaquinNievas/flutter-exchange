@@ -237,7 +237,13 @@ class AmountInput extends _$AmountInput {
       );
     } catch (e) {
       final message = e is DioException ? e.message : e.toString().split(': ').last;
-      state = state.copyWith(isLoading: false, errorMessage: message);
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: message,
+        estimatedRate: 0.0,
+        convertedAmount: 0.0,
+        time: 0,
+      );
     }
   }
 

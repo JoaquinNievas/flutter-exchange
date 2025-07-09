@@ -43,7 +43,7 @@ const List<Currency> currenciesMock = [
     code: "ARS",
     symbol: '\$',
     name: "Peso Argentino",
-    flagPath: "assets/fiat_currencies/BRL.png",
+    flagPath: "assets/fiat_currencies/ARS.jpg",
   ),
 
   //

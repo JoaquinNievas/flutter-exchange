@@ -58,7 +58,7 @@ final selectedCurrencyProvider =
     );
 
 typedef _$SelectedCurrency = AutoDisposeNotifier<SelectedCurrencyState>;
-String _$amountInputHash() => r'd883be3c0d55fb8c51a75e04f8a5f4de89d96481';
+String _$amountInputHash() => r'ea6030b23c9c7aae1de562beb625881e11582000';
 
 /// See also [AmountInput].
 @ProviderFor(AmountInput)
