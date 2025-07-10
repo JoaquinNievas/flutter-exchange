@@ -50,7 +50,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
         child: showLoader
             ? CircularProgressIndicator()
             : Container(
-                width: 350,
+                width: 340,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
@@ -83,7 +83,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                         child: ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(vertical: 12),
+                            padding: EdgeInsets.symmetric(vertical: 10),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           ),
                           child: Text("Cambiar", style: TextStyle(color: Colors.white, fontSize: 16)),

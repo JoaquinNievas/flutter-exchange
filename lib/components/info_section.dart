@@ -58,7 +58,7 @@ class InfoSection extends ConsumerWidget {
             children: [
               InfoRow(label: "Tasa estimada", value: '≈ ${amountInput.estimatedRate}', unit: selectedTo.code),
               InfoRow(label: "Recibirás", value: '≈ ${amountInput.convertedAmount}', unit: selectedTo.code),
-              InfoRow(label: "Tiempo estimado", value: '≈ ${amountInput.time}', unit: 'min'),
+              InfoRow(label: "Tiempo estimado", value: '≈ ${amountInput.time}', unit: 'Min'),
             ],
           ),
         ),

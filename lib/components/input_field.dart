@@ -17,9 +17,10 @@ class AmountInputField extends ConsumerWidget {
       decoration: InputDecoration(
         prefixText: '${selectedFrom.code} ',
         prefixStyle: TextStyle(color: AppColors.primary, fontSize: 15),
-        contentPadding: EdgeInsets.symmetric(horizontal: 12),
+        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        isDense: true,
       ),
-      style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
       initialValue: intialAmount.toString(),
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}'))],
       onFieldSubmitted: (value) => ref.read(amountInputProvider.notifier).update(value),
