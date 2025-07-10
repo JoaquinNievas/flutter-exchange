@@ -19,6 +19,7 @@ class AmountInputField extends ConsumerWidget {
         prefixStyle: TextStyle(color: AppColors.primary, fontSize: 15),
         contentPadding: EdgeInsets.symmetric(horizontal: 12),
       ),
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
       initialValue: intialAmount.toString(),
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}'))],
       onFieldSubmitted: (value) => ref.read(amountInputProvider.notifier).update(value),
