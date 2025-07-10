@@ -49,7 +49,7 @@ class CurrencySelector extends ConsumerWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(currency.flagPath, width: 24, height: 24),
+          Image.asset(currency.flagPath, width: 22, height: 22),
           SizedBox(width: 8),
           //Los codigos tienen entre 3 y 4 caracteres, por lo que pongo un ancho minimo de 40
           //por fines estéticos
