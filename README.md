@@ -1,42 +1,43 @@
-# Bienvenido al coding-interview-frontend
+# 💱 coding-interview-frontend
 
-## Descripción
-Acá tienes todos los assets que necesitas para llevar a cabo una pequeña prueba técnica. El objetivo es que puedas demostrar tus habilidades de programación y de UI. El proyecto consiste de una pequeña calculadora que te muestra cuanto vas a recibir si quieres cambiar una determinada cantidad de una moneda a otra.
+## 📱 Descripción
 
-## Características
-1. Hay dos tipos de monedas: "FIAT" y "CRYPTO".
-2. La tasa de cambio la podrás obtener de nuestro API público.
-3. La moneda del input 
+Calculadora de tipo de cambio desarrollada con **Flutter 3** y [**Riverpod**](https://pub.dev/packages/riverpod), ejecutada en simulador **iOS 17.0 (iPhone 15 Pro)** y también testeada en versión **web**.
 
-## API
-- URL: https://74j6q7lg6a.execute-api.eu-west-1.amazonaws.com/stage/orderbook/public/recommendations
-- Query Params:
-  - `type`: 0 -> Cambio de CRYPTO a FIAT, 1 -> Cambio de FIAT a CRYPTO
-  - `cryptoCurrencyId`: La moneda crypto (el ID está en el nombre del asset)
-  - `fiatCurrencyId`: La moneda fiat (el ID está en el nombre del asset)
-  - `amount`: Cantidad a cambiar
-  - `amountCurrencyId`: La moneda en la que está del input
+---
 
-Del response, simplemente obtener el `data.byPrice.fiatToCryptoExchangeRate` y multiplicarlo/dividirlo para mostrar toda la data necesaria.
+## 🧠 Consideraciones
 
-### Que puedes hacer: 
-- ✅ Preferiblemente, usa Flutter :)
-- ✅ Cuantas mejoras de UX como veas necesarias/quieras
-- ✅ No todo tiene que estar funcionando a la perfección, lo que más vamos a tomar en cuenta es el parecido con el diseño y la calidad del código.
-- ✅ Desarrolla la app con la arquitecura de una app que va a escalar, no hagas un código que no puedas mantener en el futuro.
+El diseño original incluía un botón llamado **"Cambiar"**, pero decidí dejarlo sin funcionalidad, ya que el cálculo se realiza automáticamente con cada interacción del usuario:
 
+- ✅ Cambiar las monedas en los campos **"Tengo"** y **"Quiero"**
+- 🔁 Intercambiar ambas monedas con el botón central
+- ⌨️ Ingresar un nuevo valor y presionar **Enter**
 
-### Que **no** puedes hacer:
-- ❌ Estresarte 🤗
+> 💡 Consideré que este flujo simula una etapa previa a una transacción, y el botón **"Cambiar"** podría utilizarse en una segunda etapa para confirmar.
 
+---
 
-## Pasos para comenzar
-1. Haz un fork usando este repositorio como template
-2. Clona el repositorio en tu máquina
-3. Desarrolla la mini-app
-4. Sube tus cambios a tu repositorio
-5. Avísanos que has terminado
-6. ???
-7. PROFIT
+## 🗂️ Capturas
 
-### Cualquier duda contactarme a https://www.linkedin.com/in/carlosfontest/
+En la raíz del proyecto se encuentra una carpeta llamada [`CAPTURAS`](./CAPTURAS), que contiene registros visuales y videos de funcionamiento.
+
+| Pantalla de inicio       | Selector FIAT                     | Selector Cripto                     |
+| ------------------------ | --------------------------------- | ----------------------------------- |
+| ![](./CAPTURAS/Main.png) | ![](./CAPTURAS/Selector_FIAT.png) | ![](./CAPTURAS/Selector_Cripto.png) |
+
+---
+
+## 🎞️ Animación (Descartada)
+
+En un principio implementé una animación para el intercambio de monedas al presionar el botón central. Sin embargo, al finalizar el desarrollo noté que no era compatible con la lógica de estado existente, y por cuestiones de tiempo decidí removerla.
+
+Podés ver una demostración de esa funcionalidad aquí 👉 [Animación.mov](./CAPTURAS/Animacion.mov)
+
+---
+
+## 🙋‍♂️ Autor
+
+👤 [Joaquín Nievas](https://www.linkedin.com/in/joaquin-nievas-a4b668147/)
+
+---
