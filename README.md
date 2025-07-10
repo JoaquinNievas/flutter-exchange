@@ -26,6 +26,10 @@ En la raíz del proyecto se encuentra una carpeta llamada [`CAPTURAS`](./CAPTURA
 | ------------------------ | --------------------------------- | ----------------------------------- |
 | ![](./CAPTURAS/Main.png) | ![](./CAPTURAS/Selector_FIAT.png) | ![](./CAPTURAS/Selector_Cripto.png) |
 
+| Carga inicial (loader)            | Llamada a API (loader)          |
+| --------------------------------- | ------------------------------- |
+| ![](./CAPTURAS/Carga_Inicial.png) | ![](./CAPTURAS/Llamada_Api.png) |
+
 ---
 
 ## 🎞️ Animación (Descartada)
