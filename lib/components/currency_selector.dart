@@ -46,21 +46,19 @@ class CurrencySelector extends ConsumerWidget {
           ref.read(selectedCurrencyProvider.notifier).setTo(c);
         });
       },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.orange),
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(currency.flagPath, width: 24, height: 24),
-            SizedBox(width: 8),
-            Text(currency.code),
-            Icon(Icons.arrow_drop_down),
-          ],
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(currency.flagPath, width: 24, height: 24),
+          SizedBox(width: 8),
+          //Los codigos tienen entre 3 y 4 caracteres, por lo que pongo un ancho minimo de 40
+          //por fines estéticos
+          ConstrainedBox(
+            constraints: BoxConstraints(minWidth: 40),
+            child: Text(currency.code, style: Theme.of(context).textTheme.labelLarge),
+          ),
+          const RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right_rounded)),
+        ],
       ),
     );
   }

@@ -11,19 +11,71 @@ class CurrencySelectorContainer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currencies = ref.watch(selectedCurrencyProvider);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Stack(
       children: [
-        CurrencySelector(currency: currencies.from, isfrom: true),
-        GestureDetector(
-          onTap: () => ref.read(selectedCurrencyProvider.notifier).toggle(),
-          child: CircleAvatar(
-            backgroundColor: AppColors.primary,
-            child: Icon(Icons.sync_alt, color: Colors.white),
+        Padding(
+          padding: const EdgeInsets.only(top: 3.0),
+          child: Stack(
+            children: [
+              //Contenedor con los selectores de moneda
+              Container(
+                //rounded border with appcolors.primary color
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                margin: const EdgeInsets.symmetric(vertical: 3.0),
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.primary, width: 1.5),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CurrencySelector(currency: currencies.from, isfrom: true),
+                    CurrencySelector(currency: currencies.to, isfrom: false),
+                  ],
+                ),
+              ),
+
+              //Boton de cambio
+              Positioned.fill(
+                child: GestureDetector(
+                  onTap: () => ref.read(selectedCurrencyProvider.notifier).toggle(),
+                  child: CircleAvatar(
+                    backgroundColor: AppColors.primary,
+                    child: Icon(Icons.sync_alt, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-        CurrencySelector(currency: currencies.to, isfrom: false),
+
+        //labels
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            children: [SelectorLabel('tengo'), SelectorLabel('quiero')],
+          ),
+        ),
       ],
+    );
+  }
+}
+
+class SelectorLabel extends StatelessWidget {
+  const SelectorLabel(this.label, {super.key});
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      color: Colors.white,
+      child: Text(
+        label.toUpperCase(),
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 9.0, height: 1.0),
+      ),
     );
   }
 }
