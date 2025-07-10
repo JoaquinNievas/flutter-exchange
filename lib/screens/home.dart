@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_exchange/components/background_painter.dart';
 import 'package:flutter_exchange/providers/currency_calculator_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exchange/models/index.dart';
@@ -46,53 +47,58 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFE6FAFB),
-      body: Center(
-        child: showLoader
-            ? CircularProgressIndicator()
-            : Container(
-                width: 340,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: _globalSpacing,
-                  children: [
-                    // Monedas
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(_globalSpacing, _globalSpacing, _globalSpacing, 0),
-                      child: CurrencySelectorContainer(),
+      body: Stack(
+        children: [
+          CustomPaint(size: MediaQuery.of(context).size, painter: BackgroundPainter()),
+          Center(
+            child: showLoader
+                ? CircularProgressIndicator()
+                : Container(
+                    width: 340,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
                     ),
-
-                    // Monto
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: _globalSpacing),
-                      child: AmountInputField(),
-                    ),
-
-                    // Info
-                    InfoSection(),
-
-                    // Botón
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(_globalSpacing, 0, _globalSpacing, _globalSpacing),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          ),
-                          child: Text("Cambiar", style: TextStyle(color: Colors.white, fontSize: 16)),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: _globalSpacing,
+                      children: [
+                        // Monedas
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(_globalSpacing, _globalSpacing, _globalSpacing, 0),
+                          child: CurrencySelectorContainer(),
                         ),
-                      ),
+
+                        // Monto
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: _globalSpacing),
+                          child: AmountInputField(),
+                        ),
+
+                        // Info
+                        InfoSection(),
+
+                        // Botón
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(_globalSpacing, 0, _globalSpacing, _globalSpacing),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              ),
+                              child: Text("Cambiar", style: TextStyle(color: Colors.white, fontSize: 16)),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
+          ),
+        ],
       ),
     );
   }
