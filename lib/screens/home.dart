@@ -18,10 +18,28 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
   Currency? selectedFrom;
   Currency? selectedTo;
   static const _globalSpacing = 20.0;
+  late final ProviderSubscription _subscription;
 
   @override
   void initState() {
     super.initState();
+
+    _subscription = ref.listenManual(amountInputProvider, (previous, next) {
+      if (next.errorMessage != null && next.errorTimestamp != previous?.errorTimestamp) {
+        final snackBar = SnackBar(
+          content: Text(next.errorMessage!),
+          duration: const Duration(seconds: 4),
+          behavior: SnackBarBehavior.floating,
+        );
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        });
+
+        ref.read(amountInputProvider.notifier).clearError();
+      }
+    });
+
     Future.microtask(() async {
       await ref.read(currencyListProvider.notifier).fetchCurrencies();
       await ref.read(amountInputProvider.notifier).fetchConversionData();
@@ -29,21 +47,14 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
   }
 
   @override
+  void dispose() {
+    _subscription.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final showLoader = !ref.watch(isDatareadyProvider);
-
-    //Muestro error porque algunas conversiones no traen datos
-    ref.listen(amountInputProvider, (previous, next) {
-      if (next.errorMessage != null && next.errorMessage != previous?.errorMessage) {
-        final snackBar = SnackBar(
-          content: Text(next.errorMessage!),
-          duration: const Duration(seconds: 5),
-          behavior: SnackBarBehavior.floating,
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        ref.read(amountInputProvider.notifier).clearError();
-      }
-    });
 
     return Scaffold(
       backgroundColor: const Color(0xFFE6FAFB),

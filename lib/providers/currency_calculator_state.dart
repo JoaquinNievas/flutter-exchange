@@ -2,6 +2,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_exchange/services/calculator/get_currency_list.dart';
 import 'package:flutter_exchange/models/index.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_exchange/models/convertion_result_state.dart';
+
 part 'currency_calculator_state.g.dart';
 
 //
@@ -95,45 +97,6 @@ bool isDataready(ref) {
       currencyList.cryptoCurrencies.isNotEmpty &&
       selectedCurrencies.from.code.isNotEmpty &&
       selectedCurrencies.to.code.isNotEmpty;
-}
-
-//
-// Controla el input del monto y realiza el cálculo de la conversión
-//
-class ConvertionResult {
-  final double amount;
-  final double estimatedRate;
-  final double convertedAmount;
-  final int time;
-  final bool isLoading;
-  final String? errorMessage;
-
-  const ConvertionResult({
-    required this.amount,
-    required this.estimatedRate,
-    required this.convertedAmount,
-    required this.time,
-    this.isLoading = false,
-    this.errorMessage,
-  });
-
-  ConvertionResult copyWith({
-    double? amount,
-    double? estimatedRate,
-    double? convertedAmount,
-    int? time,
-    bool? isLoading,
-    String? errorMessage,
-  }) {
-    return ConvertionResult(
-      amount: amount ?? this.amount,
-      estimatedRate: estimatedRate ?? this.estimatedRate,
-      convertedAmount: convertedAmount ?? this.convertedAmount,
-      time: time ?? this.time,
-      isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
-  }
 }
 
 class ConversionRequest {
@@ -240,6 +203,7 @@ class AmountInput extends _$AmountInput {
       state = state.copyWith(
         isLoading: false,
         errorMessage: message,
+        errorTimestamp: DateTime.now(),
         estimatedRate: 0.0,
         convertedAmount: 0.0,
         time: 0,
