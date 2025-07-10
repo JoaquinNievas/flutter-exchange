@@ -28,7 +28,7 @@ En la raíz del proyecto se encuentra una carpeta llamada [`CAPTURAS`](./CAPTURA
 
 | Carga inicial (loader)            | Llamada a API (loader)          |
 | --------------------------------- | ------------------------------- |
-| ![](./CAPTURAS/Carga_Inicial.png) | ![](./CAPTURAS/Llamada_Api.png) |
+| ![](./CAPTURAS/Carga_Inicial.png) | ![](./CAPTURAS/Llamada_API.png) |
 
 ---
 
